@@ -1,23 +1,13 @@
-import {
-  HStack,
-  List,
-  ListItem,
-  Image,
-  Text,
-  Spinner,
-  Button,
-  Heading,
-} from "@chakra-ui/react"
-import useGenres, { Genre } from "../Hooks/useGenres"
-import getCroppedImageUrl from "../services/image-url"
+import { Button, Heading, HStack, Image, List, ListItem, Spinner } from '@chakra-ui/react';
 
-interface Props {
-  onSelectGenre: (genre: Genre) => void
-  selectedGenreId?: number;
-}
+import useGenres, { Genre } from '../Hooks/useGenres';
+import getCroppedImageUrl from '../services/image-url';
+import useGameQueryStore from '../store';
 
-const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
+const GenreList = () => {
   const { data, error, isLoading} = useGenres()
+  const selectedGenreId = useGameQueryStore(s=>s.gameQuery.genreId);
+  const setSelectedGenreId = useGameQueryStore(s=> s.setGenreId);
 
   if (error) return null
 
@@ -43,7 +33,7 @@ const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
                 fontSize="lg"
                 variant="link"
                 onClick={() => {
-                  onSelectGenre(genre)
+                  setSelectedGenreId(genre.id)
                 }}
               >
                 {genre.name}
